@@ -1,38 +1,25 @@
 <template name="posts">
-	<!-- Button trigger modal -->
-	<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#postModal">
-	  Dare to Say Something
+	{{#if currentUser}}
+		<!-- Button trigger modal -->
+		<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#postModal">
+		  Dare to Say Something
 	</button>
+	{{/if}}
 
 	<hr>
-	
-	<div class="row post">
-		<div class="col-md-1">
-			<img src="img/profile.jpg" alt="">
-		</div>
-		<div class="col-md-11">
-			<small>Posted by User at date</small>
-			<p>This is the users post</p>
-		</div>
-	</div>	
-	<div class="row post">
-		<div class="col-md-1">
-			<img src="img/profile.jpg" alt="">
-		</div>
-		<div class="col-md-11">
-			<small>Posted by User at date</small>
-			<p>This is the users post</p>
-		</div>
-	</div>	
-	<div class="row post">
-		<div class="col-md-1">
-			<img src="img/profile.jpg" alt="">
-		</div>
-		<div class="col-md-11">
-			<small>Posted by User at date</small>
-			<p>This is the users post</p>
-		</div>
-	</div>
+	{{#each posts}}
+		<div class="row post">
+			<div class="col-md-1">
+				<img src="{{getProfileImg userId}}" alt="">
+			</div>
+			<div class="col-md-11">
+				<small>Posted by {{userName}} at {{createdAt}}</small>
+				<p>{{body}}</p>
+			</div>
+		</div>	
+	{{else}}
+		<p>There are no Posts</p>
+	{{/each}}
 
 	<!-- Modal -->
 	<div class="modal fade" id="postModal" tabindex="-1" role="dialog" aria-labelledby="postModalLabel">
@@ -43,11 +30,11 @@
 	        <h4 class="modal-title" id="postModalLabel"> Say Something</h4>
 	      </div>
 	      <div class="modal-body">
-	        ...
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	        <button type="button" class="btn btn-primary">Save changes</button>
+	        {{#autoForm collection="Posts" id="insertPostsForm" type="insert"}}
+	        	{{> afQuickField name="body" rows=4}}
+		        <button type="submit" class="btn btn-primary">Save changes</button>
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        	{{/autoForm}}
 	      </div>
 	    </div>
 	  </div>
